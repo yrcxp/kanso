@@ -9,10 +9,11 @@
     "homePage": "博客",
     "search": "搜索",
     "back": "返回",
-    "settings": "设置"
-  },
-  "navbarMenu": {
-    "about": "关于"
+    "settings": "设置",
+    "about": {
+      "title": "关于",
+      "content": "你好，我是 Rene Wang。我目前在 LobeHub 担任设计工程师。"
+    }
   },
   "postItem": {
     "readMore": "阅读全文",
@@ -39,4 +40,3 @@
     "all": "全部"
   }
 }
-

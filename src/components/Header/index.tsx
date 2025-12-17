@@ -55,7 +55,11 @@ const Header: React.FC<HeaderProps> = ({
   var pageMenuItems: any[] = [];
 
   useEffect(() => {
-    if (typeof window !== 'undefined' && screen.width > 768 && window.location.pathname.match(/\/p\/.+/)) {
+    if (
+      typeof window !== "undefined" &&
+      screen.width > 768 &&
+      window.location.pathname.match(/\/p\/.+/)
+    ) {
       const handleScroll = () => {
         const container = document.querySelector(".content");
         if (!container) return;
@@ -83,10 +87,7 @@ const Header: React.FC<HeaderProps> = ({
 
   return (
     <Navbar autoClose fixed>
-      <StatuBar
-        battery={86}
-        deviceName={t("nav.deviceName")}
-      />
+      <StatuBar battery={86} deviceName={t("nav.deviceName")} />
       <ActionBar>
         <ActionGroup>
           <ActionItem
@@ -147,11 +148,7 @@ const Header: React.FC<HeaderProps> = ({
           <Dialog open={open} onClose={handleClose}>
             <DialogTitle>About</DialogTitle>
             <DialogContent>
-              <p>
-                Hello, I'm Rene Wang. I'm a software engineer and a designer.
-                I'm a fan of technology and design. I'm a fan of technology and
-                design.
-              </p>
+              <p>{t("nav.about.content")}</p>
             </DialogContent>
             <DialogAction>
               <Button

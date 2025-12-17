@@ -9,10 +9,11 @@
     "homePage": "Home",
     "search": "Search",
     "back": "BACK",
-    "settings": "settings"
-  },
-  "navbarMenu": {
-    "about": "About"
+    "settings": "settings",
+    "about": {
+      "title": "About",
+      "content": "Hello, I'm Rene Wang. I'm a software engineer and a designer. I'm a fan of technology and design. I'm a fan of technology and design."
+    }
   },
   "postItem": {
     "readMore": "Read More",
@@ -39,4 +40,3 @@
     "all": "All"
   }
 }
-
