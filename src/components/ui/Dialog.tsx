@@ -40,9 +40,8 @@ export const Dialog: React.FC<DialogProps> = ({ open, onClose, children }) => {
       className="
         fixed inset-0 z-50
         flex items-center justify-center
-        bg-black/40
-        animate-fadeIn
       "
+      style={{ backgroundColor: 'rgba(0,0,0,0.4)' }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -52,12 +51,12 @@ export const Dialog: React.FC<DialogProps> = ({ open, onClose, children }) => {
         className="
           relative
           w-full max-w-md mx-4
-          bg-[var(--eink-paper)]
-          border border-[var(--eink-border)]
-          rounded-lg
-          shadow-lg
-          animate-slideUp
         "
+        style={{
+          backgroundColor: 'var(--eink-paper)',
+          border: '1px solid var(--eink-border)',
+          boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+        }}
         role="dialog"
         aria-modal="true"
       >
