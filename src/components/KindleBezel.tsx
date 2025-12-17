@@ -13,32 +13,45 @@ interface KindleBezelProps {
  * Features:
  * - Asymmetric design like Kindle Oasis with grip area on the left
  * - E-ink paper-like screen appearance
- * - Subtle texture and shadows for realism
- * - Responsive: shows bezel on desktop, full screen on mobile
+ * - Locked aspect ratio (7:10) for consistent appearance
+ * - Responsive: shows bezel on desktop/tablet, full screen on mobile
  */
+
+// Kindle screen aspect ratio (width:height) - approximately 7:10
+const SCREEN_ASPECT_RATIO = 7 / 10;
+
 const KindleBezel: React.FC<KindleBezelProps> = ({ children, dark = false }) => {
   return (
     <div className={dark ? "dark" : ""} data-theme={dark ? "dark" : "light"}>
-      {/* Desktop: Show device frame */}
-      <div className="hidden md:flex items-center justify-center min-h-screen py-8 px-4 bg-gradient-to-br from-device-bg-start to-device-bg-end">
+      {/* Desktop/Tablet: Show device frame with locked aspect ratio */}
+      <div 
+        className="hidden md:flex items-center justify-center min-h-screen py-2 px-4"
+        style={{
+          background: `linear-gradient(135deg, var(--device-bg-gradient-start) 0%, var(--device-bg-gradient-end) 100%)`,
+        }}
+      >
         {/* Device outer shell */}
         <div 
-          className="relative flex shadow-kindle-bezel rounded-kindle"
+          className="relative flex overflow-hidden"
           style={{
             background: `linear-gradient(145deg, var(--bezel-accent) 0%, var(--bezel-outer) 50%, var(--bezel-inner) 100%)`,
+            borderRadius: '1.5rem',
+            boxShadow: '0 20px 60px -10px var(--bezel-shadow), 0 10px 20px -5px var(--bezel-shadow)',
+            // Lock max height to viewport
+            maxHeight: 'calc(100vh - 1rem)',
           }}
         >
           {/* Left grip area (Oasis-style asymmetric design) */}
           <div 
-            className="hidden lg:flex flex-col items-center justify-center w-16 rounded-l-kindle"
+            className="hidden lg:flex flex-col items-center justify-center w-14 shrink-0"
             style={{
               background: `linear-gradient(180deg, var(--bezel-accent) 0%, var(--bezel-outer) 100%)`,
             }}
           >
             {/* Page turn buttons */}
-            <div className="space-y-4 py-8">
+            <div className="space-y-3 py-6">
               <div 
-                className="w-8 h-12 rounded-md opacity-60"
+                className="w-7 h-10 rounded-md opacity-60"
                 style={{
                   background: `linear-gradient(180deg, var(--bezel-inner) 0%, var(--bezel-outer) 100%)`,
                   boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05)',
@@ -46,7 +59,7 @@ const KindleBezel: React.FC<KindleBezelProps> = ({ children, dark = false }) => 
                 title="Page Back"
               />
               <div 
-                className="w-8 h-12 rounded-md opacity-60"
+                className="w-7 h-10 rounded-md opacity-60"
                 style={{
                   background: `linear-gradient(180deg, var(--bezel-inner) 0%, var(--bezel-outer) 100%)`,
                   boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.3), 0 1px 0 rgba(255,255,255,0.05)',
@@ -57,20 +70,24 @@ const KindleBezel: React.FC<KindleBezelProps> = ({ children, dark = false }) => 
           </div>
 
           {/* Main bezel frame */}
-          <div className="p-3">
+          <div className="p-2">
             {/* Inner bezel edge */}
             <div 
-              className="p-0.5 rounded-kindle-screen"
+              className="p-0.5"
               style={{
                 background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 100%)',
+                borderRadius: '0.25rem',
               }}
             >
-              {/* Screen container with E-ink appearance */}
+              {/* Screen container with locked aspect ratio */}
               <div 
-                className="relative rounded-kindle-screen overflow-hidden shadow-kindle-screen"
+                className="relative overflow-hidden"
                 style={{
-                  width: 'min(500px, 80vw)',
-                  height: 'min(700px, 85vh)',
+                  // Height based on viewport, width calculated from aspect ratio
+                  height: 'min(680px, calc(100vh - 2rem))',
+                  width: `min(476px, calc((100vh - 2rem) * ${SCREEN_ASPECT_RATIO}))`,
+                  minWidth: '320px',
+                  borderRadius: '0.25rem',
                 }}
               >
                 {/* E-ink paper texture overlay */}
@@ -85,7 +102,7 @@ const KindleBezel: React.FC<KindleBezelProps> = ({ children, dark = false }) => 
                 <div 
                   className="absolute inset-0 pointer-events-none z-10"
                   style={{
-                    boxShadow: 'inset 0 0 60px rgba(0,0,0,0.03)',
+                    boxShadow: 'inset 0 0 40px rgba(0,0,0,0.03)',
                   }}
                 />
 
@@ -102,25 +119,12 @@ const KindleBezel: React.FC<KindleBezelProps> = ({ children, dark = false }) => 
               </div>
             </div>
           </div>
-
-          {/* Right side thin bezel */}
-          <div 
-            className="hidden lg:block w-3 rounded-r-kindle"
-            style={{
-              background: `linear-gradient(180deg, var(--bezel-accent) 0%, var(--bezel-outer) 100%)`,
-            }}
-          />
-        </div>
-
-        {/* Power button indicator (small LED) */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2">
-          <div className="w-2 h-2 rounded-full bg-green-600/30" />
         </div>
       </div>
 
-      {/* Mobile: Full screen without bezel */}
+      {/* Mobile (xs/sm): Full screen without bezel */}
       <div 
-        className="md:hidden min-h-screen"
+        className="md:hidden min-h-screen overflow-y-auto"
         style={{ 
           backgroundColor: 'var(--eink-paper)',
           color: 'var(--eink-ink)'
@@ -133,4 +137,3 @@ const KindleBezel: React.FC<KindleBezelProps> = ({ children, dark = false }) => 
 };
 
 export default KindleBezel;
-

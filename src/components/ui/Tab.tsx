@@ -1,10 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 /**
  * Kindle-style Tab Components
  * Minimal tab navigation that matches the E-ink aesthetic
+ * Features color inversion on active/tap state like real Kindle
  */
 
 interface TabProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -16,12 +17,12 @@ export const Tab: React.FC<TabProps> = ({ className = "", children, ...props }) 
     <div
       className={`
         flex items-center gap-1
-        border-b border-[var(--eink-divider)]
         pb-2 mb-4
         overflow-x-auto
         scrollbar-thin
         ${className}
       `}
+      style={{ borderBottom: '1px solid var(--eink-divider)' }}
       role="tablist"
       {...props}
     >
@@ -41,6 +42,23 @@ export const TabItem: React.FC<TabItemProps> = ({
   children,
   ...props
 }) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  // Kindle-style invert on tap
+  const normalStyles = {
+    color: active ? 'var(--eink-ink)' : 'var(--eink-ink-muted)',
+    backgroundColor: 'transparent',
+    borderBottomColor: active ? 'var(--eink-ink)' : 'transparent',
+  };
+
+  const pressedStyles = {
+    color: 'var(--eink-paper)',
+    backgroundColor: 'var(--eink-ink)',
+    borderBottomColor: 'var(--eink-ink)',
+  };
+
+  const currentStyles = isPressed ? pressedStyles : normalStyles;
+
   return (
     <button
       role="tab"
@@ -49,14 +67,17 @@ export const TabItem: React.FC<TabItemProps> = ({
         px-3 py-1.5
         text-sm font-sans font-medium
         whitespace-nowrap
-        transition-all duration-150
+        transition-colors duration-75
         border-b-2
+        select-none
         ${className}
       `}
-      style={{
-        color: active ? 'var(--eink-ink)' : 'var(--eink-ink-muted)',
-        borderBottomColor: active ? 'var(--eink-ink)' : 'transparent',
-      }}
+      style={currentStyles}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      onMouseLeave={() => setIsPressed(false)}
+      onTouchStart={() => setIsPressed(true)}
+      onTouchEnd={() => setIsPressed(false)}
       {...props}
     >
       {children}

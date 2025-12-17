@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { BatteryIcon, CellularIcon, SearchIcon, MenuIcon, CloseIcon } from "./Icons";
 
 /**
@@ -115,19 +115,39 @@ export const ActionItem: React.FC<ActionItemProps> = ({
   changeFill = true,
   ...props
 }) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  // Kindle-style invert on tap
+  const normalStyles = {
+    color: 'var(--eink-ink-secondary)',
+    backgroundColor: 'transparent',
+  };
+
+  const pressedStyles = {
+    color: 'var(--eink-paper)',
+    backgroundColor: 'var(--eink-ink)',
+  };
+
+  const currentStyles = isPressed ? pressedStyles : normalStyles;
+
   return (
     <button
       className={`
         flex flex-col items-center justify-center
         px-2 py-1
         rounded
-        transition-colors duration-150
+        transition-colors duration-75
         text-xs font-sans
         min-w-[50px]
-        hover:opacity-80
+        select-none
         ${className}
       `}
-      style={{ color: 'var(--eink-ink-secondary)' }}
+      style={currentStyles}
+      onMouseDown={() => setIsPressed(true)}
+      onMouseUp={() => setIsPressed(false)}
+      onMouseLeave={() => setIsPressed(false)}
+      onTouchStart={() => setIsPressed(true)}
+      onTouchEnd={() => setIsPressed(false)}
       {...props}
     >
       {children}
@@ -221,6 +241,7 @@ interface ActionBarMenuProps {
 
 export const ActionBarMenu: React.FC<ActionBarMenuProps> = ({ items }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isPressed, setIsPressed] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -233,18 +254,31 @@ export const ActionBarMenu: React.FC<ActionBarMenuProps> = ({ items }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Kindle-style invert on tap
+  const buttonStyles = isPressed ? {
+    color: 'var(--eink-paper)',
+    backgroundColor: 'var(--eink-ink)',
+  } : {
+    color: 'var(--eink-ink-secondary)',
+    backgroundColor: 'transparent',
+  };
+
   return (
     <div ref={menuRef} className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
+        onMouseDown={() => setIsPressed(true)}
+        onMouseUp={() => setIsPressed(false)}
+        onMouseLeave={() => setIsPressed(false)}
+        onTouchStart={() => setIsPressed(true)}
+        onTouchEnd={() => setIsPressed(false)}
         className="
           p-2
-          text-[var(--eink-ink-secondary)]
-          hover:text-[var(--eink-ink)]
-          hover:bg-[var(--eink-paper-warm)]
           rounded
-          transition-colors duration-150
+          transition-colors duration-75
+          select-none
         "
+        style={buttonStyles}
       >
         <MenuIcon size={18} />
       </button>
