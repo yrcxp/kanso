@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { BatteryIcon, CellularIcon, SearchIcon, MenuIcon, CloseIcon } from "./Icons";
+import { BatteryIcon, WifiIcon, SearchIcon, MenuIcon, CloseIcon } from "./Icons";
+import { useDeviceSettings } from "@/contexts/deviceSettings";
 
 /**
  * Kindle-style Navigation Components
@@ -12,22 +13,49 @@ import { BatteryIcon, CellularIcon, SearchIcon, MenuIcon, CloseIcon } from "./Ic
 // Status Bar (top bar with time, battery, etc.)
 // ============================================
 
+// Airplane mode icon
+const AirplaneModeIcon: React.FC<{ size?: number; className?: string }> = ({ 
+  size = 20, 
+  className = "" 
+}) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+  </svg>
+);
+
+// Bluetooth icon
+const BluetoothIcon: React.FC<{ size?: number; className?: string }> = ({ 
+  size = 20, 
+  className = "" 
+}) => (
+  <svg
+    className={className}
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
+  </svg>
+);
+
 interface StatusBarProps {
   deviceName?: string;
   battery?: number;
-  celluar?: {
-    on: boolean;
-    label?: string;
-    siginal?: number;
-  };
 }
 
 export const StatuBar: React.FC<StatusBarProps> = ({
   deviceName = "Kindle",
   battery = 100,
-  celluar = { on: false, label: "LTE", siginal: 4 },
 }) => {
   const [time, setTime] = useState("");
+  const { wireless } = useDeviceSettings();
 
   useEffect(() => {
     const updateTime = () => {
@@ -56,18 +84,38 @@ export const StatuBar: React.FC<StatusBarProps> = ({
         {deviceName}
       </span>
       <div className="flex items-center gap-3 md:gap-2" style={{ color: 'var(--eink-ink-secondary)' }}>
-        {celluar?.on && (
+        {/* Airplane Mode indicator */}
+        {wireless.airplaneMode && (
+          <AirplaneModeIcon size={18} className="md:hidden" />
+        )}
+        {wireless.airplaneMode && (
+          <AirplaneModeIcon size={14} className="hidden md:block" />
+        )}
+
+        {/* WiFi indicator */}
+        {wireless.wifiEnabled && !wireless.airplaneMode && (
           <div className="flex items-center gap-1.5 md:gap-1">
-            <span className="text-xs md:text-[10px] font-sans font-medium">{celluar.label}</span>
-            <CellularIcon size={18} className="md:hidden" signal={celluar.siginal} />
-            <CellularIcon size={14} className="hidden md:block" signal={celluar.siginal} />
+            <WifiIcon size={18} className="md:hidden" strength={wireless.wifiSignal} />
+            <WifiIcon size={14} className="hidden md:block" strength={wireless.wifiSignal} />
           </div>
         )}
+
+        {/* Bluetooth indicator */}
+        {wireless.bluetoothEnabled && !wireless.airplaneMode && (
+          <>
+            <BluetoothIcon size={18} className="md:hidden" />
+            <BluetoothIcon size={14} className="hidden md:block" />
+          </>
+        )}
+
+        {/* Battery indicator */}
         <div className="flex items-center gap-1.5 md:gap-1">
           <span className="text-xs md:text-[10px] font-sans">{battery}%</span>
           <BatteryIcon size={18} className="md:hidden" level={battery} />
           <BatteryIcon size={14} className="hidden md:block" level={battery} />
         </div>
+
+        {/* Time */}
         <span className="text-sm md:text-xs font-sans tabular-nums">{time}</span>
       </div>
     </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import CodeBlock from "@/components/CodeBlock";
@@ -64,10 +64,37 @@ const ArticlePage = ({ id, postProps, postContent, locale }: {
   postContent: string;
   locale: string;
 }) => {
+  const topRef = useRef<HTMLDivElement>(null);
+
+  // Reset scroll position when navigating to article
+  useEffect(() => {
+    // Find the scrollable parent container (KindleBezel content area)
+    const findScrollableParent = (element: HTMLElement | null): HTMLElement | null => {
+      if (!element) return null;
+      const parent = element.parentElement;
+      if (!parent) return null;
+      
+      const style = window.getComputedStyle(parent);
+      if (style.overflowY === 'auto' || style.overflowY === 'scroll') {
+        return parent;
+      }
+      return findScrollableParent(parent);
+    };
+
+    if (topRef.current) {
+      const scrollableParent = findScrollableParent(topRef.current);
+      if (scrollableParent) {
+        scrollableParent.scrollTop = 0;
+      }
+    }
+    // Also reset window scroll for mobile view
+    window.scrollTo(0, 0);
+  }, [id]);
+
   if (!postProps) return null;
 
   return (
-    <div>
+    <div ref={topRef}>
       <StyledArticlePage>
         <Cover>
           {typeof postProps.cover == "string" && (

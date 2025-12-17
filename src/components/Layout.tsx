@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import KindleBezel from "@/components/KindleBezel";
 import { ICurrentPage, ISiteConfig } from "@/types/index";
 import { ColorSchemeProvider } from "@/contexts/colorScheme";
+import { DeviceSettingsProvider } from "@/contexts/deviceSettings";
 import "kindle-fonts/bookerly.css";
 import "kindle-fonts/amazon-ember.css";
 
@@ -48,20 +49,22 @@ const Layout = (props: {
 
   return (
     <ColorSchemeProvider value={{ colorScheme, setColorScheme }}>
-      <KindleBezel dark={colorScheme === "dark"}>
-        <div ref={containerEle} className="h-full">
-          <Header
-            menuItems={menuItems}
-            lang={locale}
-            currentPage={currentPage}
-            siteConfig={siteConfig}
-            containerEle={containerEle}
-          />
-          <main className="min-h-[80vh] pb-8 px-4 md:px-6">
-            {children}
-          </main>
-        </div>
-      </KindleBezel>
+      <DeviceSettingsProvider>
+        <KindleBezel dark={colorScheme === "dark"}>
+          <div ref={containerEle} className="h-full">
+            <Header
+              menuItems={menuItems}
+              lang={locale}
+              currentPage={currentPage}
+              siteConfig={siteConfig}
+              containerEle={containerEle}
+            />
+            <main className="min-h-[80vh] pb-8 px-4 md:px-6">
+              {children}
+            </main>
+          </div>
+        </KindleBezel>
+      </DeviceSettingsProvider>
     </ColorSchemeProvider>
   );
 };

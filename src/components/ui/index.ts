@@ -34,3 +34,6 @@ export {
 // Dialog Components
 export { Dialog, DialogTitle, DialogContent, DialogAction } from "./Dialog";
 
+// Form Components
+export { Switch } from "./Switch";
+
