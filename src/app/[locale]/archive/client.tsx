@@ -37,7 +37,7 @@ const AllPost: React.FC<AllPostsProps> = ({
   );
 
   const locales = [
-    { localeString: "简体中文", routeName: "zh-CN" },
+    { localeString: "简体中文", routeName: "zh" },
     { localeString: "English", routeName: "en-US" },
   ];
 

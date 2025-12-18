@@ -1,10 +1,10 @@
 module.exports = {
 	title: {
-		"zh-CN": "Rene Wang 的个人网站",
+		"zh": "Rene Wang 的个人网站",
 		"en-US": "Rene's Official Website",
 	},
 	description: {
-		"zh-CN":
+		"zh":
 			"分享我的 Web, iOS, 游戏开发日志、3D 建模、创业经历以及生活随感。",
 		"en-US":
 			"My experience about web, AI, iOS, game development, 3D art, start-up, and my life journal.",

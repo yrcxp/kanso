@@ -4,7 +4,7 @@ import siteConfig from "../site.config";
 
 export default function sitemap(): MetadataRoute.Sitemap {
 	const baseUrl = siteConfig.root;
-	const locales = ["en-US", "zh-CN"];
+	const locales = ["en-US", "zh"];
 
 	// Static pages
 	const staticPages: MetadataRoute.Sitemap = locales.flatMap((locale) => [

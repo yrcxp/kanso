@@ -10,7 +10,7 @@ import Giscus from "@giscus/react";
 function formatDate(dateString: string, locale: string): string {
   const date = new Date(dateString);
 
-  if (locale === "zh-CN") {
+  if (locale === "zh") {
     const year = date.getFullYear();
     const month = date.getMonth() + 1;
     const day = date.getDate();

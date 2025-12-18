@@ -13,7 +13,7 @@ export default async function generateRssFeed() {
 	const author = siteConfig.author;
 
 	const feed = new Feed({
-		title: siteConfig.title["zh-CN"],
+		title: siteConfig.title["zh"],
 		description: siteConfig.description,
 		id: siteURL,
 		link: siteURL,
@@ -32,7 +32,7 @@ export default async function generateRssFeed() {
 	const allPosts = getAllPosts({
 		enableContent: true,
 		enableFlat: true,
-		locale: "zh-CN",
+		locale: "zh",
 	});
 
 	fs.mkdirSync(`./public/rss`, {

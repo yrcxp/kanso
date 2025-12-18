@@ -17,7 +17,7 @@ import { useTranslations } from "next-intl";
 import type { IPost } from "@/types/index";
 import Link from "next/link";
 
-const MAX_POST_COUNT = 15;
+const MAX_POST_COUNT = 25;
 
 function PostList({
   allPosts,

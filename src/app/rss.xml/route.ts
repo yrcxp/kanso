@@ -66,7 +66,7 @@ function generateRssXml(locale: string): string {
 
 export async function GET(request: Request) {
 	const { searchParams } = new URL(request.url);
-	const locale = searchParams.get("locale") || "zh-CN";
+	const locale = searchParams.get("locale") || "zh";
 
 	const rssXml = generateRssXml(locale);
 
