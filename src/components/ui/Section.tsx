@@ -156,6 +156,17 @@ export const GridItem: React.FC<GridItemProps> = ({
   );
 
   if (href) {
+    // Check if it's an internal link (starts with /)
+    const isInternalLink = href.startsWith("/");
+    
+    if (isInternalLink) {
+      return (
+        <Link href={href}>
+          {imageContent}
+        </Link>
+      );
+    }
+    
     return (
       <Link href={href} target="_blank" rel="noopener noreferrer">
         {imageContent}

@@ -121,15 +121,15 @@ const Home = (props: HomeProps) => {
 
         <Grid>
           <GridItem
-            href="https://github.com/RiverTwilight/Awesome-Machine-Learning-Playground?tab=readme-ov-file"
+            href={`/${locale}/browser?url=${encodeURIComponent("https://github.com/RiverTwilight/Awesome-Machine-Learning-Playground?tab=readme-ov-file")}`}
             src="/image/cover/machine-learning.png"
           />
           <GridItem
-            href="https://febook.rene.wang"
+            href={`/${locale}/browser?url=${encodeURIComponent("https://febook.rene.wang")}`}
             src="/image/cover/febook.png"
           />
           <GridItem
-            href="https://geekits.ygeeker.com"
+            href={`/${locale}/browser?url=${encodeURIComponent("https://geekits.ygeeker.com")}`}
             src="/image/cover/geekits.png"
           />
         </Grid>

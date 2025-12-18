@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useEffect, useRef, ReactNode } from "react";
+import React, { useEffect, useRef, ReactNode, useMemo } from "react";
 import ImageBlock from "@/components/ImageBlock";
 import { Typography } from "@/components/ui";
+import { useToolbar } from "@/contexts/toolbar";
+import { useReaderSettings } from "@/contexts/readerSettings";
+import ReaderToolbar from "@/components/ReaderToolbar";
 import "katex/dist/katex.min.css";
-import Giscus from "@giscus/react";
 
 function formatDate(dateString: string, locale: string): string {
   const date = new Date(dateString);
@@ -24,6 +26,14 @@ function formatDate(dateString: string, locale: string): string {
   }
 }
 
+// Font family mapping
+const fontFamilyMap: Record<string, string> = {
+  bookerly: "'Bookerly', 'Noto Serif SC', Georgia, serif",
+  "amazon-ember": "'Amazon Ember', 'Noto Sans SC', sans-serif",
+  "noto-serif": "'Noto Serif SC', Georgia, serif",
+  system: "system-ui, -apple-system, sans-serif",
+};
+
 const ArticlePage = ({
   id,
   postProps,
@@ -36,6 +46,27 @@ const ArticlePage = ({
   locale: string;
 }) => {
   const topRef = useRef<HTMLDivElement>(null);
+  const { setCustomToolbar } = useToolbar();
+  const { settings } = useReaderSettings();
+
+  // Set up custom reader toolbar
+  useEffect(() => {
+    if (postProps?.title) {
+      setCustomToolbar(
+        <ReaderToolbar
+          title={postProps.title}
+          onMenuClick={() => {
+            // TODO: Implement menu functionality
+            console.log("Menu clicked");
+          }}
+        />
+      );
+    }
+
+    return () => {
+      setCustomToolbar(null);
+    };
+  }, [postProps?.title, setCustomToolbar]);
 
   // Reset scroll position when navigating to article
   useEffect(() => {
@@ -64,11 +95,20 @@ const ArticlePage = ({
     window.scrollTo(0, 0);
   }, [id]);
 
+  // Compute reader styles based on settings
+  const readerStyles = useMemo(() => ({
+    fontSize: `${settings.fontSize}px`,
+    fontFamily: fontFamilyMap[settings.fontFamily] || fontFamilyMap.bookerly,
+    lineHeight: settings.lineHeight,
+    paddingLeft: `${settings.marginHorizontal}px`,
+    paddingRight: `${settings.marginHorizontal}px`,
+  }), [settings]);
+
   if (!postProps) return null;
 
   return (
     <div ref={topRef}>
-      <div className="overflow-hidden p-0 lg:px-3">
+      <div className="overflow-hidden p-0">
         <div className="mt-1.5 -mx-2.5 [&_img]:object-cover [&_img]:w-full [&_img]:max-h-[40vh]">
           {typeof postProps.cover == "string" && (
             <>
@@ -77,39 +117,28 @@ const ArticlePage = ({
             </>
           )}
         </div>
-        <Typography itemScope itemType="http://schema.org/Article">
-          <h1 itemProp="headline">{postProps.title}</h1>
-          <div className="text-[var(--eink-ink-muted)] text-sm mb-4">
-            <time itemProp="datePublished" dateTime={postProps.date}>
-              {formatDate(postProps.date, locale)}
-            </time>
-          </div>
+        <div style={{ paddingLeft: readerStyles.paddingLeft, paddingRight: readerStyles.paddingRight }}>
+          <Typography itemScope itemType="http://schema.org/Article">
+            <h1 itemProp="headline">{postProps.title}</h1>
+            <div className="text-[var(--eink-ink-muted)] text-sm mb-4">
+              <time itemProp="datePublished" dateTime={postProps.date}>
+                {formatDate(postProps.date, locale)}
+              </time>
+            </div>
 
-          <section itemProp="articleBody" className="font-['Bookerly','Noto_Serif_SC']">{postContent}</section>
-        </Typography>
-      </div>
-      {/* {giscusConfig.enabled && (
-        <div className="px-3">
-          <Giscus
-            repo={giscusConfig.config.repo}
-            repoId={giscusConfig.config.repoId}
-            category={giscusConfig.config.category}
-            categoryId={giscusConfig.config.categoryId}
-            mapping="pathname"
-            strict="0"
-            reactions-enabled="1"
-            emit-metadata="0"
-            input-position="bottom"
-            // theme={
-            // 	colorScheme === "dark"
-            // 		? "noborder_dark"
-            // 		: "noborder_light"
-            // }
-            lang={giscusConfig.config.lang}
-            loading="lazy"
-          ></Giscus>
+            <section 
+              itemProp="articleBody" 
+              style={{
+                fontSize: readerStyles.fontSize,
+                fontFamily: readerStyles.fontFamily,
+                lineHeight: readerStyles.lineHeight,
+              }}
+            >
+              {postContent}
+            </section>
+          </Typography>
         </div>
-      )} */}
+      </div>
     </div>
   );
 };

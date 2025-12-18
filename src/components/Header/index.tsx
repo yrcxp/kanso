@@ -1,18 +1,16 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ActionGroup,
   ArrowBackSharpIcon,
   ActionItem,
   ActionBarSpace,
-  Navbar,
   Dialog,
   DialogContent,
   DialogAction,
   SearchBar,
-  StatuBar,
   Button,
   ActionBar,
   ActionBarMenu,
@@ -31,6 +29,10 @@ interface HeaderProps {
   menuItems?: any[];
 }
 
+/**
+ * Header ActionBar Component
+ * Only renders the action bar content - StatusBar and Navbar wrapper are now in Layout
+ */
 const Header: React.FC<HeaderProps> = ({ menuItems = [] }) => {
   const router = useRouter();
   const t = useTranslations();
@@ -48,84 +50,81 @@ const Header: React.FC<HeaderProps> = ({ menuItems = [] }) => {
   var pageMenuItems: any[] = [];
 
   return (
-    <Navbar autoClose fixed>
-      <StatuBar battery={86} deviceName={t("nav.deviceName")} />
-      <ActionBar>
-        <ActionGroup>
-          <ActionItem
-            onClick={() => {
-              router.push("/");
-            }}
-            changeFill={false}
-          >
-            <HomeOutlineIcon size={18} />
-            <span className="whitespace-nowrap">{t("nav.homePage")}</span>
-          </ActionItem>
-          <ActionItem
-            onClick={() => {
-              router.back();
-            }}
-            changeFill={false}
-          >
-            <ArrowBackSharpIcon size={18} />
-            <span className="whitespace-nowrap">{t("nav.back")}</span>
-          </ActionItem>
-          <ActionItem
-            onClick={() => {
-              router.push("/settings");
-            }}
-          >
-            <CogSharpIcon size={18} />
-            <span className="whitespace-nowrap">{t("nav.settings")}</span>
-          </ActionItem>
-        </ActionGroup>
-        <ActionBarSpace />
-        <ActionGroup>
-          <SearchBar />
-          <ActionBarMenu
-            items={[
-              ...menuItems,
-              ...pageMenuItems,
-              {
-                textPrimary: "GitHub",
-                component: "a",
-                href: "https://github.com/renewang",
-              },
-              {
-                textPrimary: "Pixiv",
-                component: "a",
-                href: "https://www.pixiv.net/en/users/35572742",
-              },
-              {
-                textPrimary: "X",
-                component: "a",
-                href: "https://x.com/renewang",
-              },
-              {
-                textPrimary: t("nav.about.title"),
-                onClick: handleClick,
-              },
-            ]}
-          />
-          <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>About</DialogTitle>
-            <DialogContent>
-              <p>{t("nav.about.content")}</p>
-            </DialogContent>
-            <DialogAction>
-              <Button
-                variant="secondary"
-                onClick={() => {
-                  window.open("mailto://contact@rene.wang");
-                }}
-              >
-                Email me
-              </Button>
-            </DialogAction>
-          </Dialog>
-        </ActionGroup>
-      </ActionBar>
-    </Navbar>
+    <ActionBar>
+      <ActionGroup>
+        <ActionItem
+          onClick={() => {
+            router.push("/");
+          }}
+          changeFill={false}
+        >
+          <HomeOutlineIcon size={18} />
+          <span className="whitespace-nowrap">{t("nav.homePage")}</span>
+        </ActionItem>
+        <ActionItem
+          onClick={() => {
+            router.back();
+          }}
+          changeFill={false}
+        >
+          <ArrowBackSharpIcon size={18} />
+          <span className="whitespace-nowrap">{t("nav.back")}</span>
+        </ActionItem>
+        <ActionItem
+          onClick={() => {
+            router.push("/settings");
+          }}
+        >
+          <CogSharpIcon size={18} />
+          <span className="whitespace-nowrap">{t("nav.settings")}</span>
+        </ActionItem>
+      </ActionGroup>
+      <ActionBarSpace />
+      <ActionGroup>
+        <SearchBar />
+        <ActionBarMenu
+          items={[
+            ...menuItems,
+            ...pageMenuItems,
+            {
+              textPrimary: "GitHub",
+              component: "a",
+              href: "https://github.com/renewang",
+            },
+            {
+              textPrimary: "Pixiv",
+              component: "a",
+              href: "https://www.pixiv.net/en/users/35572742",
+            },
+            {
+              textPrimary: "X",
+              component: "a",
+              href: "https://x.com/renewang",
+            },
+            {
+              textPrimary: t("nav.about.title"),
+              onClick: handleClick,
+            },
+          ]}
+        />
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>About</DialogTitle>
+          <DialogContent>
+            <p>{t("nav.about.content")}</p>
+          </DialogContent>
+          <DialogAction>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                window.open("mailto://contact@rene.wang");
+              }}
+            >
+              Email me
+            </Button>
+          </DialogAction>
+        </Dialog>
+      </ActionGroup>
+    </ActionBar>
   );
 };
 

@@ -6,8 +6,76 @@ import KindleBezel from "@/components/KindleBezel";
 import { ICurrentPage, ISiteConfig } from "@/types/index";
 import { ColorSchemeProvider } from "@/contexts/colorScheme";
 import { DeviceSettingsProvider } from "@/contexts/deviceSettings";
+import { ToolbarProvider, useToolbar } from "@/contexts/toolbar";
+import { ReaderSettingsProvider } from "@/contexts/readerSettings";
+import { Navbar, StatuBar } from "@/components/ui";
+import { useTranslations } from "next-intl";
 import "kindle-fonts/bookerly.css";
 import "kindle-fonts/amazon-ember.css";
+
+/**
+ * Inner layout component that can access toolbar context
+ */
+const LayoutInner = (props: {
+  siteConfig?: ISiteConfig;
+  currentPage?: ICurrentPage;
+  locale?: string;
+  children: React.ReactNode;
+  menuItems?: any[];
+  containerEle: React.RefObject<HTMLDivElement | null>;
+}) => {
+  const {
+    currentPage,
+    siteConfig,
+    locale,
+    children,
+    menuItems = [],
+    containerEle,
+  } = props;
+  const { customToolbar } = useToolbar();
+  const t = useTranslations();
+
+  // Check if we have a custom toolbar (like browser mode)
+  const hasCustomToolbar = customToolbar !== null;
+
+  // For browser mode, we need full height layout
+  if (hasCustomToolbar) {
+    return (
+      <div ref={containerEle} className="flex flex-col h-full">
+        {/* Global Navbar with StatusBar */}
+        <Navbar autoClose fixed>
+          <StatuBar battery={86} deviceName={t("nav.deviceName")} />
+          {customToolbar}
+        </Navbar>
+        {/* Spacer for fixed navbar on mobile */}
+        <div className="h-[88px] md:hidden shrink-0" />
+        {/* Main content - takes remaining height, relative for absolute children */}
+        <main className="flex-1 overflow-hidden relative">{children}</main>
+      </div>
+    );
+  }
+
+  // Default layout for normal pages
+  return (
+    <div ref={containerEle}>
+      {/* Global Navbar with StatusBar */}
+      <Navbar autoClose fixed>
+        <StatuBar battery={86} deviceName={t("nav.deviceName")} />
+        <Header
+          menuItems={menuItems}
+          lang={locale}
+          currentPage={currentPage}
+          siteConfig={siteConfig}
+          containerEle={containerEle}
+        />
+      </Navbar>
+      {/* Spacer for fixed navbar on mobile */}
+      <div className="h-[88px] md:hidden" />
+      {/* Main content */}
+      <main className="min-h-[80vh] pb-8 px-4 md:px-6">{children}</main>
+    </div>
+  );
+};
 
 const Layout = (props: {
   /**网站配置 */
@@ -50,39 +118,38 @@ const Layout = (props: {
   return (
     <ColorSchemeProvider value={{ colorScheme, setColorScheme }}>
       <DeviceSettingsProvider>
-        {/* Device label at bottom-left of viewport */}
-        <div 
-          className="hidden md:block fixed bottom-4 left-4 pointer-events-none z-50"
-          style={{
-            fontSize: '10px',
-            fontFamily: 'system-ui, -apple-system, sans-serif',
-            color: 'rgba(80, 80, 80, 0.5)',
-            lineHeight: '1.5',
-          }}
-        >
-          <span>Kindle Oasis.</span>
-          <br />
-          <span>My actual device is KPW5</span>
-          <br />
-          <span>© 2021 Rene Wang</span>
-        </div>
+        <ReaderSettingsProvider>
+          <ToolbarProvider>
+            {/* Device label at bottom-left of viewport */}
+            <div
+              className="hidden md:block fixed bottom-4 left-4 pointer-events-none z-50"
+              style={{
+                fontSize: "10px",
+                fontFamily: "system-ui, -apple-system, sans-serif",
+                color: "rgba(80, 80, 80, 0.5)",
+                lineHeight: "1.5",
+              }}
+            >
+              <span>Kindle Oasis.</span>
+              <br />
+              <span>My actual device is KPW5</span>
+              <br />
+              <span>© 2021 Rene Wang</span>
+            </div>
 
-        <KindleBezel dark={colorScheme === "dark"}>
-          <div ref={containerEle}>
-            <Header
-              menuItems={menuItems}
-              lang={locale}
-              currentPage={currentPage}
-              siteConfig={siteConfig}
-              containerEle={containerEle}
-            />
-            {/* Spacer for fixed navbar on mobile */}
-            <div className="h-[88px] md:hidden" />
-            <main className="min-h-[80vh] pb-8 px-4 md:px-6">
-              {children}
-            </main>
-          </div>
-        </KindleBezel>
+            <KindleBezel dark={colorScheme === "dark"}>
+              <LayoutInner
+                siteConfig={siteConfig}
+                currentPage={currentPage}
+                locale={locale}
+                menuItems={menuItems}
+                containerEle={containerEle}
+              >
+                {children}
+              </LayoutInner>
+            </KindleBezel>
+          </ToolbarProvider>
+        </ReaderSettingsProvider>
       </DeviceSettingsProvider>
     </ColorSchemeProvider>
   );
