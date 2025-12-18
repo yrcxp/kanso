@@ -31,6 +31,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
+    authors: [{ name: "Rene Wang" }],
     openGraph: {
       title: t("title"),
       description: t("description"),
@@ -44,6 +45,12 @@ export async function generateMetadata({
           alt: "Rene Wang",
         },
       ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("title"),
+      description: t("description"),
+      images: ["/og.png"],
     },
   };
 }
