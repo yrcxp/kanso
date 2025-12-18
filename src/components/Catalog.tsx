@@ -1,64 +1,4 @@
 import * as React from "react";
-import styled from "styled-components";
-
-const Switch = styled.button`
-	margin: 1rem 0 0;
-	padding: 0;
-	width: 3.33rem;
-	height: 3.33rem;
-	line-height: 1;
-	color: #909090;
-	background-color: #fff;
-	border: 1px solid #f1f1f1;
-	border-radius: 50%;
-	box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-	cursor: pointer;
-	@media (min-width: 1024px) {
-		display: none;
-	}
-	@media (max-width: 1024px) {
-		position: fixed;
-		bottom: 26px;
-		right: 26px;
-	}
-`;
-
-const Warpper = styled.div`
-	.card {
-		border-radius: 30px;
-	}
-	@media (max-width: 1024px) {
-		.card {
-			height: 100vh;
-		}
-		position: fixed;
-		top: 56px;
-		left: 0;
-		right: 0;
-		overflow-y: scroll;
-		transition: all 0.3s;
-		${(props: { collapse: boolean }) => props.collapse && "top: -100vh;"}
-	}
-`;
-
-const List = styled.div`
-	padding: 0 10px;
-`;
-
-const CataItem = styled.a`
-	padding-left: ${(props: { level?: number }) =>
-		props.level && `${12 * props.level}px`};
-	padding-top: 5px;
-	display: block;
-	padding-bottom: 5px;
-	cursor: pointer;
-	width: 100%;
-	font-weight: bold;
-	&:hover {
-		background: #f6f6f6;
-		// color: #43b155;
-	}
-`;
 
 export default ({
 	catalog,
@@ -70,27 +10,31 @@ export default ({
 }) => {
 	const [collapse, setCollapse] = React.useState(true);
 	const Title = (props, index) => (
-		<CataItem
+		<a
 			href={`#${props.title}`}
 			key={props.title}
-			level={props.level}
+			className="block pt-[5px] pb-[5px] cursor-pointer w-full font-bold hover:bg-[#f6f6f6]"
+			style={{ paddingLeft: props.level ? `${12 * props.level}px` : undefined }}
 		>
 			{props.title}
-		</CataItem>
+		</a>
 	);
 	const handleClick = () => {
 		setCollapse(!collapse);
 	};
 	return (
 		<>
-			{/* <Warpper collapse={collapse}>
+			{/* <div className={`max-lg:fixed max-lg:left-0 max-lg:right-0 max-lg:overflow-y-scroll max-lg:transition-all max-lg:duration-300 [&_.card]:rounded-[30px] [&_.card]:max-lg:h-screen ${collapse ? 'max-lg:-top-screen' : 'max-lg:top-14'}`}>
 				<Card icon={<ListOutline />} title="目录">
-					<List>{catalog.map(Title)}</List>
+					<div className="px-2.5">{catalog.map(Title)}</div>
 				</Card>
-			</Warpper>
-			<Switch onClick={handleClick}>
+			</div>
+			<button
+				onClick={handleClick}
+				className="mt-4 p-0 w-[3.33rem] h-[3.33rem] leading-none text-[#909090] bg-white border border-[#f1f1f1] rounded-full shadow-[0_0_5px_rgba(0,0,0,0.05)] cursor-pointer lg:hidden max-lg:fixed max-lg:bottom-[26px] max-lg:right-[26px]"
+			>
 				<ListOutline />
-			</Switch> */}
+			</button> */}
 		</>
 	);
 };

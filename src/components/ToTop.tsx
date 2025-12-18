@@ -1,37 +1,4 @@
 import * as React from 'react'
-import styled, { css } from 'styled-components'
-
-const iconPublic = `
-    fill:none;
-    stroke-linecap:round;
-    stroke-linejoin:round;
-    stroke-width:48px;
-`
-const ToTop = styled.button`
-    position: fixed;
-    right: 10px;
-    bottom: 10px;
-    width: 40px;
-    height: 40px;
-    background: #fff;
-    outline: none;
-    border: none;
-    transition: 0.5s all;
-    ${(props: { hide: boolean }) => props.hide && css`
-        bottom: -50px;
-        polyline {
-            stroke: none;
-            ${iconPublic}
-        }
-    `}
-    polyline {
-        stroke:#000;
-        ${iconPublic}
-    }
-    &: hover{
-        background: #dcc9c9;
-    }
-`
 
 declare global {
     interface Window {
@@ -54,8 +21,7 @@ export default () => {
         return () => { window.removeEventListener("scroll", cb.bind(this)) }
     }, [])
     return (
-        <ToTop
-            hide={isHide}
+        <button
             onClick={() => {
                 if (document.documentElement.scrollTop) {
                     window.toTop = setInterval(() => {
@@ -66,12 +32,15 @@ export default () => {
                     window.history.pushState(null, '', '#')//兼容
                 }
             }}
-            className="card"
+            className={`card fixed right-2.5 w-10 h-10 bg-white outline-none border-none transition-all duration-500 hover:bg-[#dcc9c9] ${isHide ? '-bottom-[50px]' : 'bottom-2.5'}`}
         >
             <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 512 512'>
                 <title>ionicons-v5-a</title>
-                <polyline points='112 328 256 184 400 328' />
+                <polyline
+                    points='112 328 256 184 400 328'
+                    className={`fill-none stroke-[48px] stroke-round ${isHide ? 'stroke-none' : 'stroke-black'}`}
+                />
             </svg>
-        </ToTop>
+        </button>
     )
 }

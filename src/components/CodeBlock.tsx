@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect } from "react";
-import styled from "styled-components";
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter";
 import { atomDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
 import {
@@ -12,26 +11,6 @@ import {
 	scss,
 	typescript,
 } from "react-syntax-highlighter/dist/cjs/languages/prism";
-
-const StyledFigure = styled.figure`
-	max-height: 90vh;
-	overflow: auto;
-	/* width: 100%;*/
-
-	// Full width on mobile devices
-	@media (max-width: 768px) {
-		width: 100vw;
-		position: relative;
-		left: 50%;
-		right: 50%;
-		margin-left: -50vw;
-		margin-right: -50vw;
-
-		& pre {
-			border-radius: 0 !important;
-		}
-	}
-`;
 
 interface CodeBlockProps {
 	node?: any;
@@ -86,11 +65,11 @@ const CodeBlock = ({ node, inline, className, children, ...props }: CodeBlockPro
 			: String(children || "");
 
 	return (
-		<StyledFigure>
+		<figure className="max-h-[90vh] overflow-auto max-md:w-screen max-md:relative max-md:left-1/2 max-md:right-1/2 max-md:-ml-[50vw] max-md:-mr-[50vw] [&_pre]:max-md:!rounded-none">
 			<SyntaxHighlighter language={language || "text"} style={atomDark}>
 				{codeString.replace(/\n$/, "")}
 			</SyntaxHighlighter>
-		</StyledFigure>
+		</figure>
 	);
 };
 

@@ -1,21 +1,18 @@
 {
 	"name": "kanso",
-	"version": "2.0.0",
+	"version": "2.0.1",
 	"description": "A Responsive, Fast, i18n and Theme-able static blog base on Next.js.",
 	"main": "index.js",
 	"scripts": {
 		"dev": "next",
 		"build": "next build",
 		"start": "next start -p 4000",
-		"test:notion": "node ./src/utils/notion.js",
-		"update-posts": "./update-posts.sh",
-		"update-system": "./update-system.sh"
+		"test:notion": "node ./src/utils/notion.js"
 	},
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
 		"@giscus/react": "^3.1.0",
-		"@kindle-ui/core": "^1.1.14",
 		"@notion-stuff/blocks-markdown-parser": "^6.0.0",
 		"@notionhq/client": "^2.3.0",
 		"@vercel/analytics": "^0.1.11",
@@ -40,7 +37,6 @@
 		"rehype-katex": "latest",
 		"remark-gfm": "^4.0.1",
 		"remark-math": "latest",
-		"styled-components": "^6.1.19",
 		"uuid": "^8.3.2"
 	},
 	"devDependencies": {
@@ -48,7 +44,6 @@
 		"@tailwindcss/postcss": "^4.1.18",
 		"@types/node": "^13.13.52",
 		"@types/react": "^19.2.7",
-		"@types/styled-components": "^5.1.36",
 		"autoprefixer": "^10.4.23",
 		"feed": "^4.2.2",
 		"tailwindcss": "^4.1.18",

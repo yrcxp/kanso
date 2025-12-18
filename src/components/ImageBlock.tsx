@@ -2,7 +2,6 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import styled from "styled-components";
 
 interface ImageBlockProps {
 	node: any;
@@ -14,20 +13,6 @@ type NonArticleUsageProps = Pick<ImageBlockProps, "node">;
 
 type ArticleUsageProps = Pick<ImageBlockProps, "src" | "alt">;
 
-// Styled components
-const ImageContainer = styled.div`
-	width: 100%;
-	position: relative;
-	margin-bottom: 8px; // Adjust the space between the image and alt text as needed
-`;
-
-const AltText = styled.div`
-	text-align: center;
-	color: #666; // Example color, adjust as needed
-	font-size: 14px; // Example font size, adjust as needed
-`;
-
-// Assuming the definitions of ArticleUsageProps and NonArticleUsageProps are available elsewhere in your code
 const ImageBlock = (props: ArticleUsageProps | NonArticleUsageProps) => {
 	let src: string;
 	let alt: string;
@@ -48,7 +33,7 @@ const ImageBlock = (props: ArticleUsageProps | NonArticleUsageProps) => {
 
 	return (
 		<>
-			<ImageContainer>
+			<div className="w-full relative mb-2">
 				<Image
 					src={src}
 					alt={alt}
@@ -57,8 +42,8 @@ const ImageBlock = (props: ArticleUsageProps | NonArticleUsageProps) => {
 					height={height}
 					objectFit="contain" // Ensures the image fits within the container, maintaining its aspect ratio without cropping.
 				/>
-			</ImageContainer>
-			{alt && <AltText>{alt}</AltText>}
+			</div>
+			{alt && <div className="text-center text-[#666] text-sm">{alt}</div>}
 		</>
 	);
 };

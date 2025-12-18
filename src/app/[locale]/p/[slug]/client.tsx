@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useRef, ReactNode } from "react";
-import styled from "styled-components";
 import ImageBlock from "@/components/ImageBlock";
 import { Typography } from "@/components/ui";
 import "katex/dist/katex.min.css";
@@ -24,32 +23,6 @@ function formatDate(dateString: string, locale: string): string {
     return date.toLocaleDateString("en-US", options);
   }
 }
-
-const Cover = styled.div`
-  img {
-    object-fit: cover;
-    width: 100%;
-    max-height: 40vh;
-  }
-  margin: 6px -10px 0 -10px;
-`;
-
-const CommentContainer = styled.div`
-  padding: 0 12px;
-`;
-
-const StyledArticlePage = styled.div`
-  padding: 0;
-  overflow: hidden;
-
-  @media (min-width: 1024px) {
-    padding: 0 12px;
-  }
-
-  & section[itemProp="articleBody"] {
-    font-family: "Bookerly", "Noto Serif SC";
-  }
-`;
 
 const ArticlePage = ({
   id,
@@ -95,15 +68,15 @@ const ArticlePage = ({
 
   return (
     <div ref={topRef}>
-      <StyledArticlePage>
-        <Cover>
+      <div className="overflow-hidden p-0 lg:px-3">
+        <div className="mt-1.5 -mx-2.5 [&_img]:object-cover [&_img]:w-full [&_img]:max-h-[40vh]">
           {typeof postProps.cover == "string" && (
             <>
               <ImageBlock alt="Cover" src={postProps.cover} />
               <meta itemProp="thumbnailUrl" content={postProps.cover} />
             </>
           )}
-        </Cover>
+        </div>
         <Typography itemScope itemType="http://schema.org/Article">
           <h1 itemProp="headline">{postProps.title}</h1>
           <div className="text-[var(--eink-ink-muted)] text-sm mb-4">
@@ -112,11 +85,11 @@ const ArticlePage = ({
             </time>
           </div>
 
-          <section itemProp="articleBody">{postContent}</section>
+          <section itemProp="articleBody" className="font-['Bookerly','Noto_Serif_SC']">{postContent}</section>
         </Typography>
-      </StyledArticlePage>
+      </div>
       {/* {giscusConfig.enabled && (
-        <CommentContainer>
+        <div className="px-3">
           <Giscus
             repo={giscusConfig.config.repo}
             repoId={giscusConfig.config.repoId}
@@ -135,7 +108,7 @@ const ArticlePage = ({
             lang={giscusConfig.config.lang}
             loading="lazy"
           ></Giscus>
-        </CommentContainer>
+        </div>
       )} */}
     </div>
   );
