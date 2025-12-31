@@ -3,7 +3,7 @@ export type IPost = {
 	defaultTitle: string;
 	frontmatter: {
 		title?: string;
-		date: string;
+		createAt: string;
 		/** Tag/category of the post */
 		tag?: string;
 		/** Summary/description */

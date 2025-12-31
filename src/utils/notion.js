@@ -268,7 +268,7 @@ async function getBlogPosts() {
 		const postContent = await getPageContent(post.id);
 		const metadata = [
 			`title: ${post.title}`,
-			`date: ${post.date}`,
+			`createAt: ${post.date}`,
 			`summary: ${
 				post.summary || postContent.slice(0, 50).replaceAll("\n", " ")
 			}`,

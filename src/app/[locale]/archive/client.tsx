@@ -8,7 +8,7 @@ import { useTranslations } from "next-intl";
 
 const groupByYear = (posts: any[]) => {
   return posts.reduce((acc, post) => {
-    const year = new Date(post.frontmatter.date).getFullYear();
+    const year = new Date(post.frontmatter.createAt).getFullYear();
     if (!acc[year]) {
       acc[year] = [];
     }

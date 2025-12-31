@@ -55,8 +55,8 @@ export async function generateMetadata({
       title,
       description,
       type: "article",
-      publishedTime: frontmatter.date
-        ? new Date(frontmatter.date).toISOString()
+      publishedTime: frontmatter.createAt
+        ? new Date(frontmatter.createAt).toISOString()
         : undefined,
       authors: [AUTHOR_NAME],
       locale: locale,
@@ -107,13 +107,13 @@ export default async function ArticlePage({ params }: PageProps) {
     "@type": "Article",
     headline: title,
     description: description,
-    datePublished: frontmatter.date
-      ? new Date(frontmatter.date).toISOString()
+    datePublished: frontmatter.createAt
+      ? new Date(frontmatter.createAt).toISOString()
       : undefined,
     dateModified: frontmatter.updatedAt
       ? new Date(frontmatter.updatedAt).toISOString()
-      : frontmatter.date
-      ? new Date(frontmatter.date).toISOString()
+      : frontmatter.createAt
+      ? new Date(frontmatter.createAt).toISOString()
       : undefined,
     author: {
       "@type": "Person",

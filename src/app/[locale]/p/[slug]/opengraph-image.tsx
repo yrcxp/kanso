@@ -13,13 +13,10 @@ interface OGImageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-// Helper to extract SEO fields from the seo array format
-function extractSeoField(seo: any[] | undefined, field: string): any {
-  if (!seo || !Array.isArray(seo)) return undefined;
-  const item = seo.find(
-    (obj) => obj && typeof obj === "object" && field in obj
-  );
-  return item?.[field];
+// Helper to extract SEO fields from the seo object
+function extractSeoField(seo: any, field: string): any {
+  if (!seo || typeof seo !== "object") return undefined;
+  return seo[field];
 }
 
 export default async function Image({ params }: OGImageProps) {
@@ -52,8 +49,8 @@ export default async function Image({ params }: OGImageProps) {
   const { frontmatter } = post;
   const seo = frontmatter.seo;
   const title = extractSeoField(seo, "title") || frontmatter.title || slug;
-  const date = frontmatter.date
-    ? new Date(frontmatter.date).toLocaleDateString(locale, {
+  const date = frontmatter.createAt
+    ? new Date(frontmatter.createAt).toLocaleDateString(locale, {
         year: "numeric",
         month: "long",
         day: "numeric",

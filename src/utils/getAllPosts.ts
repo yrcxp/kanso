@@ -66,8 +66,8 @@ export default function getAllPosts(options: GetAllPostsOption): IPost[] {
 		const document = matter(file.content);
 		const { data: frontmatter, content: markdownBody } = document;
 
-		if (frontmatter.date) {
-			frontmatter.date = parseDate(frontmatter.date).toLocaleDateString();
+		if (frontmatter.createAt) {
+			frontmatter.createAt = parseDate(frontmatter.createAt).toLocaleDateString();
 		}
 
 		// Get category from frontmatter tag
@@ -90,8 +90,8 @@ export default function getAllPosts(options: GetAllPostsOption): IPost[] {
 
 	if (enableSort) {
 		return posts.sort((a, b) => {
-			const dateA = new Date(a.frontmatter.date);
-			const dateB = new Date(b.frontmatter.date);
+			const dateA = new Date(a.frontmatter.createAt);
+			const dateB = new Date(b.frontmatter.createAt);
 			return dateB.getTime() - dateA.getTime();
 		});
 	}

@@ -121,8 +121,8 @@ const ArticlePage = ({
           <Typography itemScope itemType="http://schema.org/Article">
             <h1 itemProp="headline">{postProps.title}</h1>
             <div className="text-[var(--eink-ink-muted)] text-sm mb-4">
-              <time itemProp="datePublished" dateTime={postProps.date}>
-                {formatDate(postProps.date, locale)}
+              <time itemProp="datePublished" dateTime={postProps.createAt}>
+                {formatDate(postProps.createAt, locale)}
               </time>
             </div>
 

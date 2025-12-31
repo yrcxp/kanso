@@ -70,7 +70,7 @@ function PostList({
           >
             <ListItemText
               primary={post.frontmatter ? post.frontmatter.title : post.slug}
-              second={post.frontmatter ? post.frontmatter.date : "1970/01/01"}
+              second={post.frontmatter ? post.frontmatter.createAt : "1970/01/01"}
               allowWrap
             />
             <ListItemIcon

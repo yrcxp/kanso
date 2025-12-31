@@ -36,8 +36,8 @@ async function generateAtomXml(locale: string): Promise<string> {
     .map((post) => {
       const postTitle = escapeXml(post.frontmatter.title || post.defaultTitle);
       const postUrl = `${baseUrl}/${locale}/p/${post.id}`;
-      const updated = post.frontmatter.date
-        ? new Date(post.frontmatter.date).toISOString()
+      const updated = post.frontmatter.createAt
+        ? new Date(post.frontmatter.createAt).toISOString()
         : now;
       const summary = escapeXml(
         post.frontmatter.summary || post.markdownBody?.slice(0, 200) || ""

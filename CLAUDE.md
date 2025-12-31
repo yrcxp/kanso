@@ -27,7 +27,7 @@ This project uses `pnpm` as the package manager. Use `pnpm install` to install d
 1. **Markdown Files** (`/posts` directory):
    - Structured as `/posts/{locale}/{slug}.mdx`
    - Supported locales: `en`, `zh`
-   - Required frontmatter: `title`, `date`
+   - Required frontmatter: `title`, `createAt`
    - Optional frontmatter: `tag` (category), `summary`, `pin`, `cover`, `keywords`
 
 2. **Notion Database** (optional):

@@ -33,7 +33,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
 		return posts.map((post) => ({
 			url: `${baseUrl}/${locale}/p/${post.id}`,
-			lastModified: post.frontmatter.date ? new Date(post.frontmatter.date) : new Date(),
+			lastModified: post.frontmatter.createAt ? new Date(post.frontmatter.createAt) : new Date(),
 			changeFrequency: "monthly" as const,
 			priority: 0.6,
 		}));
