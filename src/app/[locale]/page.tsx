@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import getAllPosts from "@/utils/getAllPosts";
 import getCategories from "@/utils/getCategories";
 import { setRequestLocale } from "next-intl/server";
@@ -36,12 +37,14 @@ export default async function HomePage({ params }: PageProps) {
   const allCategories = getCategories(locale);
 
   return (
-    <LauncherApp
-      allPosts={allPosts}
-      falttedPosts={allPosts}
-      allCategories={allCategories}
-      bookReviews={bookReviews}
-      locale={locale}
-    />
+    <Suspense fallback={<div />}>
+      <LauncherApp
+        allPosts={allPosts}
+        falttedPosts={allPosts}
+        allCategories={allCategories}
+        bookReviews={bookReviews}
+        locale={locale}
+      />
+    </Suspense>
   );
 }
