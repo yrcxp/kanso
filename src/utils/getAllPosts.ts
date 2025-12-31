@@ -44,6 +44,16 @@ export interface GetAllPostsOption {
 	 */
 	enableContent?: boolean;
 	locale?: string;
+	/**
+	 * Filter posts by type. If specified, only returns posts matching this type.
+	 * Common types: 'post' (default), 'book' (book reviews)
+	 */
+	filterByType?: string;
+	/**
+	 * If true, excludes posts with type='book' from the results.
+	 * This is useful for getting only regular posts.
+	 */
+	excludeBooks?: boolean;
 }
 
 export default function getAllPosts(options: GetAllPostsOption): IPost[] {
@@ -51,6 +61,8 @@ export default function getAllPosts(options: GetAllPostsOption): IPost[] {
 		locale,
 		enableContent,
 		enableSort,
+		filterByType,
+		excludeBooks = false,
 		pocessRes = {
 			markdownBody: (content: string) => content,
 			id: (content: string) => content,
@@ -59,7 +71,7 @@ export default function getAllPosts(options: GetAllPostsOption): IPost[] {
 
 	const files = getPostFiles(locale);
 
-	const posts: IPost[] = files.map((file) => {
+	let posts: IPost[] = files.map((file) => {
 		const slug = path.basename(file.path, ".mdx").trim();
 		const id = pocessRes.id ? pocessRes.id(slug) : slug;
 
@@ -87,6 +99,16 @@ export default function getAllPosts(options: GetAllPostsOption): IPost[] {
 			category,
 		};
 	}).filter(Boolean);
+
+	// Filter by type if specified
+	if (filterByType) {
+		posts = posts.filter((post) => post.frontmatter.type === filterByType);
+	}
+
+	// Exclude books if requested (for regular post lists)
+	if (excludeBooks) {
+		posts = posts.filter((post) => post.frontmatter.type !== "book");
+	}
 
 	if (enableSort) {
 		return posts.sort((a, b) => {

@@ -17,6 +17,7 @@ import Link from "next/link";
 import CategoryLabel from "./components/CategoryLabel";
 import PostList from "./components/PostList";
 import BottomNav from "./components/BottomNav";
+import BookGrid from "./components/BookGrid";
 import AppToolbar from "@/system/components/AppToolbar";
 
 interface LauncherAppProps {
@@ -24,10 +25,11 @@ interface LauncherAppProps {
   falttedPosts: IPost[];
   locale: string;
   allCategories: { slug: string; config: { name: string } }[];
+  bookReviews: IPost[];
 }
 
 export default function LauncherApp(props: LauncherAppProps) {
-  const { allPosts, falttedPosts, locale, allCategories } = props;
+  const { allPosts, falttedPosts, locale, allCategories, bookReviews } = props;
   const [activeCategory, setActiveCategory] = useAtom(activeCategoryAtom);
   const searchParams = useSearchParams();
   const activeTab = searchParams.get("tab") || "home";
@@ -106,14 +108,7 @@ export default function LauncherApp(props: LauncherAppProps) {
 
         {activeTab === "library" && (
           <Section>
-            <div className="flex items-center justify-center min-h-[60vh]">
-              <p
-                className="text-center"
-                style={{ color: "var(--eink-ink-muted)" }}
-              >
-                Library - Coming Soon
-              </p>
-            </div>
+            <BookGrid books={bookReviews} locale={locale} />
           </Section>
         )}
       </div>

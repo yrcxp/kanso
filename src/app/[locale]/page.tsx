@@ -13,6 +13,7 @@ export default async function HomePage({ params }: PageProps) {
   // Enable static rendering
   setRequestLocale(locale);
 
+  // Get regular posts (exclude books)
   const allPosts = getAllPosts({
     pocessRes: {
       markdownBody: (content) =>
@@ -20,6 +21,14 @@ export default async function HomePage({ params }: PageProps) {
       id: (text) => text,
     },
     enableFlat: true,
+    enableSort: true,
+    locale: locale,
+    excludeBooks: true,
+  }).filter((post: any) => !post.frontmatter.hidden);
+
+  // Get book reviews
+  const bookReviews = getAllPosts({
+    filterByType: "book",
     enableSort: true,
     locale: locale,
   }).filter((post: any) => !post.frontmatter.hidden);
@@ -31,6 +40,7 @@ export default async function HomePage({ params }: PageProps) {
       allPosts={allPosts}
       falttedPosts={allPosts}
       allCategories={allCategories}
+      bookReviews={bookReviews}
       locale={locale}
     />
   );
