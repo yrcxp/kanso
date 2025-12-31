@@ -24,9 +24,8 @@ export default function BookGrid({ books, locale }: BookGridProps) {
 
   return (
     <div
-      className="grid gap-6"
+      className="grid grid-cols-3 md:grid-cols-4 gap-6"
       style={{
-        gridTemplateColumns: "repeat(4, 1fr)",
         gridAutoRows: "auto",
         alignItems: "end",
       }}
